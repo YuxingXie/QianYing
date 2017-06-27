@@ -1,0 +1,1 @@
+export const SEND_GROUP_CHAT_MESSAGE='sendGroupChatMessage';
