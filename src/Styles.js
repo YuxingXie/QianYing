@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
     sendButton: {
         flex:20,justifyContent:'center'
     },
-    sendButtonTextDisable:{
+    buttonDisabled:{
         backgroundColor:'grey',
     },
-    sendButtonTextEnable:{
+    buttonEnabled:{
         backgroundColor:'blue',
     },
     sendButtonText:{

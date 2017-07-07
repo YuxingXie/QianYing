@@ -1,56 +1,26 @@
-import {combineReducers,createStore} from 'redux';
-import initData from '../src/InitData';
+import {combineReducers,createStore, applyMiddleware, compose} from 'redux';
+import initData from './InitData';
 import Reducer from '../src/Reducer';
-import MyContractsScreen from '../view/MyContractsScreen'
-import {ForHelpStack} from '../view/ForHelpScreen'
-import {FindStack} from '../view/FindScreen'
-import {MeStack} from '../view/MeScreen'
-import MyHomeScreen from '../view/MyHomeScreen'
-import {TabNavigator} from 'react-navigation';
-export const AppNavigator = TabNavigator({
-    Home: {
-        screen: MyHomeScreen,
-    },
-    Contracts: {
-        screen: MyContractsScreen,
-    },
+import {reducer as forHelpReducer} from './forHelp'
+import {navReducer} from './AppNavigatorReducers';
+import {stackReducer as forHelpStackReducer} from './forHelp';
+import thunkMiddleware from 'redux-thunk';
+const middlewares = [thunkMiddleware];
+// import Perf from 'react-addons-perf'
 
-    ForHelp: {
-        screen: ForHelpStack,
-    },
-    Find: {
-        screen: FindStack,
-    },
-    Me: {
-        screen: MeStack,
-    },
-}, {
-    tabBarOptions: {
-        activeTintColor: '#93c97e',
-    },
-});
-/**
- * 因为reducer依赖视图(分开会导致AppNavigator.router为undefined)，导致这里reducer和view无法拆分
- */
-const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Home'));
-const navReducer=  (state = initialState, action) => {
-    // console.log('initialState:');
-    // console.log(JSON.stringify(initialState));
-    /*
-     initialState:格式见initialState.json
-     */
-    const nextState = AppNavigator.router.getStateForAction(action, state);
-
-    // Simply return the original `state` if `nextState` is null or undefined.
-    // console.log('nextState:');
-    // console.log(JSON.stringify(nextState));
-    return nextState || state;
-};
-
-console.log(!navReducer);
-const appReducer = combineReducers({
+// const win = window;
+// win.Perf = Perf
+// if (process.env.NODE_ENV !== 'production') {
+//     middlewares.push(require('redux-immutable-state-invariant')());
+// }
+const storeEnhancers = compose(
+    applyMiddleware(...middlewares),
+    // (win && win.devToolsExtension) ? win.devToolsExtension() : (f) => f,
+);
+let reducers  = combineReducers({
     app:Reducer,
     nav: navReducer,
-
+    forHelp:forHelpReducer,
+    forHelpNav:forHelpStackReducer,
 });
-export default createStore(appReducer,initData);
+export default createStore(reducers,initData,storeEnhancers);

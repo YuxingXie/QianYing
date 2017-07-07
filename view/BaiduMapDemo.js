@@ -1,21 +1,27 @@
 
 import React, {Component} from "react";
 import { MapView} from "react-native-baidu-map";
-import {StyleSheet, Text, View,ListView} from "react-native";
-import store from '../src/Store';
+import {StyleSheet, Text, View,ListView,ScrollView} from "react-native";
+import store from '../src/Store.js';
 import Dimensions from "Dimensions";
 
 export default class BaiduMapDemo extends Component {
 
   constructor(props) {
     super(props);
-      this.getOwnState = this.getOwnState.bind(this);
+      // this.getOwnState = this.getOwnState.bind(this);
       this.getRoomById=this.getRoomById.bind(this);
       this.getCHats=this.getCHats.bind(this);
       this.onChange = this.onChange.bind(this);
-
-      this.state = this.getOwnState();
+      // this.getDataSource=this.getDataSource.bind(this)
+      this.dataSource=this.getDataSource();
+      // this.state = this.getOwnState();
   }
+    getDataSource(){
+        // console.log("exec getDataSource")
+        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        return ds.cloneWithRows(this.getCHats());
+    }
     onChange() {
         this.setState(this.getOwnState());
     }
@@ -23,15 +29,15 @@ export default class BaiduMapDemo extends Component {
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return {
             bdMap:store.getState().app.bdMap,
-            chats: this.getCHats(),
+            // chats: this.getCHats(),
             dataSource:ds.cloneWithRows(this.getCHats())
         };
     }
   componentDidMount() {
-      store.subscribe(this.onChange);
+      // store.subscribe(this.onChange);
   }
     componentWillUnmount() {
-        store.unsubscribe(this.onChange);
+        //store.subscribe(this.onChange);
     }
   getRoomById(id){
 
@@ -45,8 +51,8 @@ export default class BaiduMapDemo extends Component {
     getCHats(){
       let roomId='1';
       let room=this.getRoomById(roomId);
-      console.log('room:');
-      console.log(JSON.stringify(room));
+      // console.log('room:');
+      // console.log(JSON.stringify(room));
       // return room.chatMessages.concat(['']);
       return room.chatMessages;
     }
@@ -54,13 +60,13 @@ export default class BaiduMapDemo extends Component {
     return (
       <View style={styles.container}>
         <MapView
-          trafficEnabled={this.state.bdMap.trafficEnabled}
-          baiduHeatMapEnabled={this.state.bdMap.baiduHeatMapEnabled}
-          zoom={this.state.zoom}
-          mapType={this.state.bdMap.mapType}
-          center={this.state.bdMap.center}
-          marker={this.state.bdMap.marker}
-          markers={this.state.bdMap.markers}
+          trafficEnabled={store.getState().app.bdMap.trafficEnabled}
+          baiduHeatMapEnabled={store.getState().app.bdMap.baiduHeatMapEnabled}
+          zoom={store.getState().app.bdMap.zoom}
+          mapType={store.getState().app.bdMap.mapType}
+          center={store.getState().app.bdMap.center}
+          marker={store.getState().app.bdMap.marker}
+          markers={store.getState().app.bdMap.markers}
           style={styles.map}
           onMarkerClick={(e) => {
             console.warn(JSON.stringify(e));
@@ -69,14 +75,18 @@ export default class BaiduMapDemo extends Component {
           }}
         >
           <View style={{width:150,height:120,opacity:0.7,alignSelf:'flex-start',marginBottom:0}}>
-              {/*<Text>{this.state.chats}</Text>*/}
-              <ListView
-              removeClippedSubviews={false}
-              dataSource={this.state.dataSource}
-              renderRow={(rowData) =>
-              <View>
-              <Text >{rowData}</Text></View>}
-              />
+
+              <ScrollView>
+                  <ListView
+                      removeClippedSubviews={false}
+                      dataSource={this.dataSource}
+
+                      renderRow={(rowData) =>
+                          <View>
+                              <Text >{rowData}</Text></View>}
+                  />
+              </ScrollView>
+
           </View>
 
         </MapView>
