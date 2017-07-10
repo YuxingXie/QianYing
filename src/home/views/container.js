@@ -5,7 +5,8 @@ import {MyHomeScreen} from './component'
 
 function mapStateToProps(state,ownProps){
     return{
-        forHelpTopics: state.app.forHelpTopics
+        // forHelpTopics: state.app.forHelpTopics,
+        forHelpTopics: state.forHelp.groupChatRooms,
     }
 }
 export default connect(mapStateToProps)(MyHomeScreen);

@@ -15,7 +15,7 @@ import styles from '../../../Styles';
 // window.navigator.userAgent = 'react-native';
 // export function ForHelpHome({navigation,roomTitle,onChangeText}) {
 
-export default function ForHelpHome({navigation,roomTitle,onChangeText}) {
+export default function ForHelpHome({navigation,host,roomTitle,onChangeText,createNewRoom}) {
         // console.log(JSON.stringify(navigation))
         return (
             <View>
@@ -48,12 +48,13 @@ export default function ForHelpHome({navigation,roomTitle,onChangeText}) {
                     </View>
 
                     <TouchableHighlight style={{flex:1,margin:5,marginTop:15}}  onPress={()=>
-                    {navigation.navigate('ForHelpMain', { user: 'Lucy',title:roomTitle,type:'normal' })}} >
+                    {navigation.navigate('ForHelpMain', {title:roomTitle,type:'normal' })}} >
                         <Text style={{padding:5,width:200,backgroundColor:'blue',color:'white',alignSelf:'center',textAlign:'center'}}>求救</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight style={{flex:1,margin:5}}  onPress={()=>
-                    {
-                        navigation.navigate('ForHelpMain', { user: 'Lucy',title:roomTitle,type:'urgent' })
+                    <TouchableHighlight style={{flex:1,margin:5}}  onPress={()=>{
+
+                        createNewRoom(roomTitle,host,'urgent');
+                        navigation.navigate('ForHelpMain',{title:roomTitle,type:'urgent' });
                     }}>
                         <Text style={{padding:5,width:200,backgroundColor:'red',color:'white',alignSelf:'center',textAlign:'center'}}>紧急求救</Text>
                     </TouchableHighlight>

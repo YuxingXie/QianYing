@@ -6,6 +6,8 @@ function mapStateToProps(state,ownProps){
     return{
         chatInputMessage: state.forHelp.chatInput.chatInputMessage,
         sendDisable:state.forHelp.chatInput.sendDisable,
+        host:state.app.user,
+        rooms:state.forHelp.groupChatRooms
     }
 }
 function mapDispatchToProps(dispatch,ownProps) {
@@ -24,7 +26,6 @@ function mapDispatchToProps(dispatch,ownProps) {
             dispatch(Actions.chatInputMessage(text));
         },
         onSendMessage:()=> {
-            console.log('on send message')
             dispatch(Actions.sendGroupChatMessage(room.roomId,'userId'));
         },
 

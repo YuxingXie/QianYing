@@ -6,6 +6,15 @@ export const newRoomInputTitle=(input)=>{
         inputTitle:input,
     }
 }
+
+export const createNewRoom=(roomTitle,host,type)=>{
+    return {
+        type:ActionTypes.CREATE_NEW_ROOM,
+        roomTitle:roomTitle,
+        host:host,
+        roomType:type
+    }
+}
 export const sendGroupChatMessage=(roomId,userId)=>{
     return{
         type:ActionTypes.SEND_GROUP_CHAT_MESSAGE,

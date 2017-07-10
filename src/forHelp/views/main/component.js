@@ -2,8 +2,15 @@ import React from 'react';
 import {View,Text,TouchableHighlight,TextInput,Image} from 'react-native';
 import styles from '../../../../src/Styles';
 import {view as BaiduMap} from '../../../bdMap';
-function ForHelpMainScreen({chatInputMessage,sendDisable,onSendMessage,onInputMessage}){
-    // socket.on('chat message', onServerBroadcastMessage);
+function getRoomByHost(host, rooms) {
+    for(room of rooms){
+        if(host===room.host) {
+            return room;
+        }
+    }
+}
+function ForHelpMainScreen({host,rooms,chatInputMessage,sendDisable,onSendMessage,onInputMessage}){
+    const room=getRoomByHost(host,rooms);
     return (
         <View style={{flex: 1}}>
             <View>

@@ -29,11 +29,11 @@ export const MyHomeScreen = ({ navigation,forHelpTopics }) => {
                 dataSource={dataSource}
                 renderRow={(rowData) =>
                     <View style={styles.row}>
-                        <Image style={{width:30,height:30}} source={{uri:rowData.photo}} />
+                        <Image style={{width:30,height:30}} source={{uri:rowData.host.photo}} />
                         <View style={{flex:1,flexDirection:'column'}}>
-                            <Text style={{paddingLeft:10,paddingTop:0}}>{rowData.topic}</Text>
+                            <Text style={{paddingLeft:10,paddingTop:0}}>{rowData.roomName}</Text>
 
-                            <Text style={{fontSize:10,fontWeight:'200',paddingLeft:10,paddingTop:5}}>{rowData.lastMessage?rowData.lastMessage.name+':'+rowData.lastMessage.message:''}</Text>
+                            <Text style={{fontSize:10,fontWeight:'200',paddingLeft:10,paddingTop:5}}>{rowData.chatMessages?rowData.chatMessages[rowData.chatMessages.length-1]:''}</Text>
                         </View>
                     </View>}/>
 
